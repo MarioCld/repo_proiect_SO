@@ -1,0 +1,84 @@
+
+Numele fisierului:          ceva
+Tipul fisierului:           directory
+I-node number:              6061586
+Last status change:         Fri Apr  5 18:16:15 2024
+Last file access:           Fri Apr  5 18:16:15 2024
+Last file modification:     Fri Apr  5 18:16:15 2024
+
+Numele fisierului:          Fisier1
+Tipul fisierului:           directory
+I-node number:              6061586
+Last status change:         Fri Apr  5 18:16:15 2024
+Last file access:           Fri Apr  5 18:16:15 2024
+Last file modification:     Fri Apr  5 18:16:15 2024
+
+Numele fisierului:          Fisier2
+Tipul fisierului:           directory
+I-node number:              6061586
+Last status change:         Fri Apr  5 18:16:15 2024
+Last file access:           Fri Apr  5 18:16:15 2024
+Last file modification:     Fri Apr  5 18:16:15 2024
+
+Numele fisierului:          Fisier4
+Tipul fisierului:           directory
+I-node number:              6181068
+Last status change:         Thu Apr  4 16:27:26 2024
+Last file access:           Thu Apr  4 16:27:26 2024
+Last file modification:     Thu Apr  4 16:27:26 2024
+
+Numele fisierului:          Fisier3
+Tipul fisierului:           directory
+I-node number:              6181068
+Last status change:         Thu Apr  4 16:27:26 2024
+Last file access:           Thu Apr  4 16:27:26 2024
+Last file modification:     Thu Apr  4 16:27:26 2024
+
+Numele fisierului:          cevaaaa
+Tipul fisierului:           directory
+I-node number:              6181068
+Last status change:         Thu Apr  4 16:27:26 2024
+Last file access:           Thu Apr  4 16:27:26 2024
+Last file modification:     Thu Apr  4 16:27:26 2024
+
+Numele fisierului:          Fisier5
+Tipul fisierului:           directory
+I-node number:              6181056
+Last status change:         Thu Apr  4 16:27:26 2024
+Last file access:           Thu Apr  4 16:27:26 2024
+Last file modification:     Thu Apr  4 16:27:26 2024
+
+Numele fisierului:          altceva
+Tipul fisierului:           directory
+I-node number:              6181056
+Last status change:         Thu Apr  4 16:27:26 2024
+Last file access:           Thu Apr  4 16:27:26 2024
+Last file modification:     Thu Apr  4 16:27:26 2024
+
+Numele fisierului:          Fisier6
+Tipul fisierului:           directory
+I-node number:              6181056
+Last status change:         Thu Apr  4 16:27:26 2024
+Last file access:           Thu Apr  4 16:27:26 2024
+Last file modification:     Thu Apr  4 16:27:26 2024
+
+Numele fisierului:          altcevaaaa
+Tipul fisierului:           directory
+I-node number:              6181062
+Last status change:         Thu Apr  4 16:27:26 2024
+Last file access:           Thu Apr  4 16:27:26 2024
+Last file modification:     Thu Apr  4 16:27:26 2024
+
+Numele fisierului:          Fisier7
+Tipul fisierului:           directory
+I-node number:              6181062
+Last status change:         Thu Apr  4 16:27:26 2024
+Last file access:           Thu Apr  4 16:27:26 2024
+Last file modification:     Thu Apr  4 16:27:26 2024
+
+Numele fisierului:          Fisier8
+Tipul fisierului:           directory
+I-node number:              6181062
+Last status change:         Thu Apr  4 16:27:26 2024
+Last file access:           Thu Apr  4 16:27:26 2024
+Last file modification:     Thu Apr  4 16:27:26 2024
