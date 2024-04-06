@@ -45,6 +45,7 @@ void parcurgere_director(const char *director, FILE *snapshot)
   DIR *d;
   struct dirent *dir;
   struct stat statbuf;
+  char case_stat[MAX_CASE];
   d=opendir(director);
   if(!d)
     {
@@ -53,8 +54,7 @@ void parcurgere_director(const char *director, FILE *snapshot)
     }
   while((dir=readdir(d))!=NULL)
     {
-      char case_stat[MAX_CASE];
-      if (strcmp(dir->d_name, ".")==0 || strcmp(dir->d_name, "..")==0)
+      if (strcmp(dir->d_name,".")==0 || strcmp(dir->d_name,"..")==0)
 	{
 	  continue;
 	}
@@ -65,21 +65,25 @@ void parcurgere_director(const char *director, FILE *snapshot)
 	}
       switch(statbuf.st_mode & S_IFMT)
 	{
-	case S_IFBLK:  strcpy(case_stat,"block device");            break;
-	case S_IFCHR:  strcpy(case_stat,"character device");        break;
-	case S_IFDIR:  strcpy(case_stat,"directory");               break;
-	case S_IFIFO:  strcpy(case_stat,"FIFO/pipe");               break;
-	case S_IFLNK:  strcpy(case_stat,"symlink");                 break;
-	case S_IFREG:  strcpy(case_stat,"regular file");            break;
-	case S_IFSOCK: strcpy(case_stat,"socket");                  break;
-	default:       strcpy(case_stat,"unknown?");                break;
+	case S_IFBLK:  strcpy(case_stat,"block device");         break;
+	case S_IFCHR:  strcpy(case_stat,"character device");     break;
+	case S_IFDIR:  strcpy(case_stat,"directory");            break;
+	case S_IFIFO:  strcpy(case_stat,"FIFO/pipe");            break;
+	case S_IFLNK:  strcpy(case_stat,"symlink");              break;
+	case S_IFREG:  strcpy(case_stat,"regular file");         break;
+	case S_IFSOCK: strcpy(case_stat,"socket");               break;
+	default:       strcpy(case_stat,"unknown?");             break;
 	}
-      fprintf(snapshot,"\nNumele fisierului:          %s\n""Tipul fisierului:           %s\n"
-	                 "I-node number:              %ju\n""Last status change:         %s"
-                         "Last file access:           %s""Last file modification:     %s",
-              dir->d_name,case_stat,
-	      statbuf.st_ino,ctime(&statbuf.st_ctime),
-	      ctime(&statbuf.st_atime),ctime(&statbuf.st_mtime));
+      if((fprintf(snapshot,"\nNumele fisierului:          %s\n""Tipul fisierului:           %s\n"
+	                     "I-node number:              %ju\n""Last status change:         %s"
+                             "Last file access:           %s""Last file modification:     %s",
+                  dir->d_name,case_stat,
+	          statbuf.st_ino,ctime(&statbuf.st_ctime),
+		  ctime(&statbuf.st_atime),ctime(&statbuf.st_mtime)))<0)
+	{
+	  perror("Nu s-a putut scrie in snapshot!\n");
+	  exit(7);
+	}
     }
   if(closedir(d)==-1)
     {
@@ -97,7 +101,7 @@ int main(int argc, char *argv[])
       exit(1);
     }
   FILE *snapshot;
-  snapshot=fopen("Snapshot.txt", "w+");
+  snapshot=fopen("Snapshot.txt","w+");
   if(!snapshot)
     {
       perror("Nu s-a putut deschide snapshot-ul!\n");
@@ -113,6 +117,6 @@ int main(int argc, char *argv[])
       perror("Nu s-a putut inchide snapshot-ul!\n");
       exit(6);
     }
-  printf("Snapshot-ul a fost modificat cu succes!\n");
+  printf("\nSnapshot-ul a fost modificat cu succes!\n");
   return 0;
 }
