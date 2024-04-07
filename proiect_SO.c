@@ -54,26 +54,46 @@ void parcurgere_director(const char *director, FILE *snapshot)
     }
   while((dir=readdir(d))!=NULL)
     {
+      char cale_fisier[strlen(director)+strlen(dir->d_name)+2];
+      snprintf(cale_fisier,sizeof(cale_fisier),"%s/%s",director,dir->d_name);
       if (strcmp(dir->d_name,".")==0 || strcmp(dir->d_name,"..")==0)
 	{
 	  continue;
 	}
-      if(stat(director,&statbuf)==-1)
+      if(stat(cale_fisier,&statbuf)==-1)
 	{
 	  perror("Eroare stat");
 	  exit(4);
 	}
-      switch(statbuf.st_mode & S_IFMT)
+      if(S_ISBLK(statbuf.st_mode))
 	{
-	case S_IFBLK:  strcpy(case_stat,"block device");         break;
-	case S_IFCHR:  strcpy(case_stat,"character device");     break;
-	case S_IFDIR:  strcpy(case_stat,"directory");            break;
-	case S_IFIFO:  strcpy(case_stat,"FIFO/pipe");            break;
-	case S_IFLNK:  strcpy(case_stat,"symlink");              break;
-	case S_IFREG:  strcpy(case_stat,"regular file");         break;
-	case S_IFSOCK: strcpy(case_stat,"socket");               break;
-	default:       strcpy(case_stat,"unknown?");             break;
+	  strcpy(case_stat,"block device");
 	}
+      else if(S_ISCHR(statbuf.st_mode))
+	{
+	  strcpy(case_stat,"character device");
+	}
+      else if(S_ISDIR(statbuf.st_mode))
+	{
+	  strcpy(case_stat,"directory");
+	}
+      else if(S_ISFIFO(statbuf.st_mode))
+	{
+	  strcpy(case_stat,"FIFO/pipe");
+	}
+      else if(S_ISLNK(statbuf.st_mode))
+	{
+	  strcpy(case_stat,"symlink");
+	}
+      else if(S_ISREG(statbuf.st_mode))
+	{
+	  strcpy(case_stat,"regular file");
+	}
+      else if(S_ISSOCK(statbuf.st_mode))
+	{
+	  strcpy(case_stat,"socket");
+	}
+      else strcpy(case_stat,"unknown?");
       if((fprintf(snapshot,"\nNumele fisierului:          %s\n""Tipul fisierului:           %s\n"
 	                     "I-node number:              %ju\n""Last status change:         %s"
                              "Last file access:           %s""Last file modification:     %s",
