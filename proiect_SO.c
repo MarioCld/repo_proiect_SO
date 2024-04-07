@@ -95,7 +95,7 @@ void parcurgere_director(const char *director, FILE *snapshot)
 
 int main(int argc, char *argv[])
 {
-  if(argc<2 || argc>10)
+  if(argc<2 || argc>11)
     {
       perror("Numar incorect de argumente!\n");
       exit(1);
