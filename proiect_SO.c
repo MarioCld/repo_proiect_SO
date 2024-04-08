@@ -10,10 +10,13 @@
 #include <string.h>
 #include <fcntl.h>
 
+
 #define st_atime st_atim.tv_sec
 #define st_mtime st_mtim.tv_sec
 #define st_ctime st_ctim.tv_sec
 #define MAX_CASE 25
+#define CHUNK 512
+
 
 /*struct dirent {
    ino_t          d_ino; // Inode number
@@ -40,7 +43,7 @@ struct stat {
 };*/
 
 
-void parcurgere_director(const char *director, FILE *snapshot)
+void parcurgere_director(const char *director, int snapshot)
 {
   DIR *d;
   struct dirent *dir;
@@ -94,16 +97,47 @@ void parcurgere_director(const char *director, FILE *snapshot)
 	  strcpy(case_stat,"socket");
 	}
       else strcpy(case_stat,"unknown?");
-      if((fprintf(snapshot,"\nNumele fisierului:          %s\n""Tipul fisierului:           %s\n"
-	                     "I-node number:              %ju\n""Last status change:         %s"
-                             "Last file access:           %s""Last file modification:     %s",
-                  dir->d_name,case_stat,
-	          statbuf.st_ino,ctime(&statbuf.st_ctime),
-		  ctime(&statbuf.st_atime),ctime(&statbuf.st_mtime)))<0)
+      char i_node[MAX_CASE];
+      sprintf(i_node,"%ld\n",statbuf.st_ino);
+      write(snapshot,"Numele fisierului:          ",strlen("Numele fisierului:          "));
+      if((write(snapshot,dir->d_name,strlen(dir->d_name)))==-1)
 	{
 	  perror("Nu s-a putut scrie in snapshot!\n");
 	  exit(7);
 	}
+      write(snapshot,"\n",strlen("\n"));
+      write(snapshot,"Tipul fisierului:           ",strlen("Tipul fisierului:           "));
+      if((write(snapshot,case_stat,strlen(case_stat)))==-1)
+	{
+	  perror("Nu s-a putut scrie in snapshot!\n");
+	  exit(7);
+	}
+      write(snapshot,"\n",strlen("\n"));
+      write(snapshot,"I-node number:              ",strlen("I-node number:              "));
+      if((write(snapshot,i_node,strlen(i_node)))==-1)
+	{
+	  perror("Nu s-a putut scrie in snapshot!\n");
+	  exit(7);
+	}
+      write(snapshot,"Last status changed:        ",strlen("Last status changed:        "));
+      if((write(snapshot,ctime(&statbuf.st_ctime),strlen(ctime(&statbuf.st_ctime))))==-1)
+	{
+	  perror("Nu s-a putut scrie in snapshot!\n");
+	  exit(7);
+	}
+      write(snapshot,"Last file access:           ",strlen("Last file access:           "));
+      if((write(snapshot,ctime(&statbuf.st_atime),strlen(ctime(&statbuf.st_atime))))==-1)
+	{
+	  perror("Nu s-a putut scrie in snapshot!\n");
+	  exit(7);
+	}
+      write(snapshot,"Last file modification:     ",strlen("Last file modification:     "));
+      if((write(snapshot,ctime(&statbuf.st_mtime),strlen(ctime(&statbuf.st_mtime))))==-1)
+	{
+	  perror("Nu s-a putut scrie in snapshot!\n");
+	  exit(7);
+	}
+      write(snapshot,"\n",strlen("\n"));
     }
   if(closedir(d)==-1)
     {
@@ -120,9 +154,9 @@ int main(int argc, char *argv[])
       perror("Numar incorect de argumente!\n");
       exit(1);
     }
-  FILE *snapshot;
-  snapshot=fopen("Snapshot.txt","w+");
-  if(!snapshot)
+  int snapshot;
+  snapshot=open("Snapshot.txt", O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
+  if(snapshot==-1)
     {
       perror("Nu s-a putut deschide snapshot-ul!\n");
       exit(5);
@@ -132,7 +166,7 @@ int main(int argc, char *argv[])
       char *director=argv[i];
       parcurgere_director(director,snapshot);
     }
-  if(fclose(snapshot)!=0)
+  if(close(snapshot)==-1)
     {
       perror("Nu s-a putut inchide snapshot-ul!\n");
       exit(6);
