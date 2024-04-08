@@ -42,6 +42,47 @@ struct stat {
        struct timespec st_ctim;  // Time of last status change
 };*/
 
+void scriere_in_snapshot(int snapshot, const void *buffer, size_t nr)
+{
+  if(write(snapshot,buffer,nr)==-1)
+    {
+      perror("Nu s-a putut scrie in snapshot!\n");
+      exit(7);
+    }
+}
+
+void case_statbuf(struct stat statbuf, char case_stat[MAX_CASE])
+{
+  if(S_ISBLK(statbuf.st_mode))
+    {
+      strcpy(case_stat,"block device");
+    }
+  else if(S_ISCHR(statbuf.st_mode))
+    {
+      strcpy(case_stat,"character device");
+    }
+  else if(S_ISDIR(statbuf.st_mode))
+    {
+      strcpy(case_stat,"directory");
+    }
+  else if(S_ISFIFO(statbuf.st_mode))
+    {
+      strcpy(case_stat,"FIFO/pipe");
+    }
+  else if(S_ISLNK(statbuf.st_mode))
+    {
+      strcpy(case_stat,"symlink");
+    }
+  else if(S_ISREG(statbuf.st_mode))
+    {
+      strcpy(case_stat,"regular file");
+    }
+  else if(S_ISSOCK(statbuf.st_mode))
+    {
+      strcpy(case_stat,"socket");
+    }
+  else strcpy(case_stat,"unknown?");
+}
 
 void parcurgere_director(const char *director, int snapshot)
 {
@@ -68,75 +109,23 @@ void parcurgere_director(const char *director, int snapshot)
 	  perror("Eroare stat");
 	  exit(4);
 	}
-      if(S_ISBLK(statbuf.st_mode))
-	{
-	  strcpy(case_stat,"block device");
-	}
-      else if(S_ISCHR(statbuf.st_mode))
-	{
-	  strcpy(case_stat,"character device");
-	}
-      else if(S_ISDIR(statbuf.st_mode))
-	{
-	  strcpy(case_stat,"directory");
-	}
-      else if(S_ISFIFO(statbuf.st_mode))
-	{
-	  strcpy(case_stat,"FIFO/pipe");
-	}
-      else if(S_ISLNK(statbuf.st_mode))
-	{
-	  strcpy(case_stat,"symlink");
-	}
-      else if(S_ISREG(statbuf.st_mode))
-	{
-	  strcpy(case_stat,"regular file");
-	}
-      else if(S_ISSOCK(statbuf.st_mode))
-	{
-	  strcpy(case_stat,"socket");
-	}
-      else strcpy(case_stat,"unknown?");
+      case_statbuf(statbuf,case_stat);
       char i_node[MAX_CASE];
       sprintf(i_node,"%ld\n",statbuf.st_ino);
       write(snapshot,"Numele fisierului:          ",strlen("Numele fisierului:          "));
-      if((write(snapshot,dir->d_name,strlen(dir->d_name)))==-1)
-	{
-	  perror("Nu s-a putut scrie in snapshot!\n");
-	  exit(7);
-	}
+      scriere_in_snapshot(snapshot,dir->d_name,strlen(dir->d_name));
       write(snapshot,"\n",strlen("\n"));
       write(snapshot,"Tipul fisierului:           ",strlen("Tipul fisierului:           "));
-      if((write(snapshot,case_stat,strlen(case_stat)))==-1)
-	{
-	  perror("Nu s-a putut scrie in snapshot!\n");
-	  exit(7);
-	}
+      scriere_in_snapshot(snapshot,case_stat,strlen(case_stat));
       write(snapshot,"\n",strlen("\n"));
       write(snapshot,"I-node number:              ",strlen("I-node number:              "));
-      if((write(snapshot,i_node,strlen(i_node)))==-1)
-	{
-	  perror("Nu s-a putut scrie in snapshot!\n");
-	  exit(7);
-	}
+      scriere_in_snapshot(snapshot,i_node,strlen(i_node));
       write(snapshot,"Last status changed:        ",strlen("Last status changed:        "));
-      if((write(snapshot,ctime(&statbuf.st_ctime),strlen(ctime(&statbuf.st_ctime))))==-1)
-	{
-	  perror("Nu s-a putut scrie in snapshot!\n");
-	  exit(7);
-	}
+      scriere_in_snapshot(snapshot,ctime(&statbuf.st_ctime),strlen(ctime(&statbuf.st_ctime)));
       write(snapshot,"Last file access:           ",strlen("Last file access:           "));
-      if((write(snapshot,ctime(&statbuf.st_atime),strlen(ctime(&statbuf.st_atime))))==-1)
-	{
-	  perror("Nu s-a putut scrie in snapshot!\n");
-	  exit(7);
-	}
+      scriere_in_snapshot(snapshot,ctime(&statbuf.st_atime),strlen(ctime(&statbuf.st_atime)));
       write(snapshot,"Last file modification:     ",strlen("Last file modification:     "));
-      if((write(snapshot,ctime(&statbuf.st_mtime),strlen(ctime(&statbuf.st_mtime))))==-1)
-	{
-	  perror("Nu s-a putut scrie in snapshot!\n");
-	  exit(7);
-	}
+      scriere_in_snapshot(snapshot,ctime(&statbuf.st_mtime),strlen(ctime(&statbuf.st_mtime)));
       write(snapshot,"\n",strlen("\n"));
     }
   if(closedir(d)==-1)
@@ -172,5 +161,6 @@ int main(int argc, char *argv[])
       exit(6);
     }
   printf("\nSnapshot-ul a fost modificat cu succes!\n");
+  printf("\n");
   return 0;
 }
