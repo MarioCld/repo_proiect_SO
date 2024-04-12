@@ -1,9 +1,12 @@
+***** Numele directorului curent: Fisier_mare_1 *****
+
 Numele fisierului:          ceva
 Tipul fisierului:           regular file
 I-node number:              6054565
 Last status changed:        Fri Apr  5 18:16:15 2024
 Last file access:           Fri Apr  5 20:15:35 2024
 Last file modification:     Fri Apr  5 18:16:15 2024
+
 
 Numele fisierului:          Fisier1
 Tipul fisierului:           directory
@@ -12,12 +15,15 @@ Last status changed:        Thu Apr  4 15:29:25 2024
 Last file access:           Sun Apr  7 23:29:01 2024
 Last file modification:     Thu Apr  4 15:29:25 2024
 
+
 Numele fisierului:          Fisier2
 Tipul fisierului:           directory
 I-node number:              6061598
 Last status changed:        Tue Apr  2 23:21:44 2024
 Last file access:           Sun Apr  7 23:29:01 2024
 Last file modification:     Tue Apr  2 23:21:44 2024
+
+***** Numele directorului curent: Fisier_mare_2 *****
 
 Numele fisierului:          Fisier4
 Tipul fisierului:           directory
@@ -26,12 +32,14 @@ Last status changed:        Thu Apr  4 15:19:13 2024
 Last file access:           Sun Apr  7 23:29:01 2024
 Last file modification:     Tue Apr  2 23:21:44 2024
 
+
 Numele fisierului:          Fisier3
 Tipul fisierului:           directory
 I-node number:              6181071
 Last status changed:        Thu Apr  4 15:29:17 2024
 Last file access:           Sun Apr  7 23:29:01 2024
 Last file modification:     Thu Apr  4 15:29:17 2024
+
 
 Numele fisierului:          cevaaaa
 Tipul fisierului:           regular file
@@ -40,12 +48,15 @@ Last status changed:        Thu Apr  4 15:27:13 2024
 Last file access:           Fri Apr  5 20:15:35 2024
 Last file modification:     Thu Apr  4 15:27:13 2024
 
+***** Numele directorului curent: Fisier_mare_3 *****
+
 Numele fisierului:          Fisier5
 Tipul fisierului:           directory
 I-node number:              6181061
 Last status changed:        Thu Apr  4 15:19:29 2024
 Last file access:           Sun Apr  7 23:29:01 2024
 Last file modification:     Tue Apr  2 23:21:44 2024
+
 
 Numele fisierului:          altceva
 Tipul fisierului:           regular file
@@ -54,12 +65,15 @@ Last status changed:        Thu Apr  4 15:27:26 2024
 Last file access:           Fri Apr  5 20:15:35 2024
 Last file modification:     Thu Apr  4 15:27:26 2024
 
+
 Numele fisierului:          Fisier6
 Tipul fisierului:           directory
 I-node number:              6181059
 Last status changed:        Thu Apr  4 15:29:09 2024
 Last file access:           Sun Apr  7 23:29:01 2024
 Last file modification:     Thu Apr  4 15:29:09 2024
+
+***** Numele directorului curent: Fisier_mare_4 *****
 
 Numele fisierului:          altcevaaaa
 Tipul fisierului:           regular file
@@ -68,12 +82,14 @@ Last status changed:        Thu Apr  4 15:28:06 2024
 Last file access:           Fri Apr  5 20:15:35 2024
 Last file modification:     Thu Apr  4 15:28:06 2024
 
+
 Numele fisierului:          Fisier7
 Tipul fisierului:           directory
 I-node number:              6181067
 Last status changed:        Thu Apr  4 15:19:42 2024
 Last file access:           Sun Apr  7 23:29:01 2024
 Last file modification:     Tue Apr  2 23:21:44 2024
+
 
 Numele fisierului:          Fisier8
 Tipul fisierului:           directory
