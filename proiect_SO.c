@@ -18,30 +18,6 @@
 #define MAX_CASE 25
 
 
-/*struct dirent {
-   ino_t          d_ino; // Inode number
-   off_t          d_off; // Not an offset; see below
-   unsigned short d_reclen; // Length of this record
-   unsigned char  d_type; // Type of file; not supported by all filesystem types
-   char           d_name[256]; // Null-terminated filename
-};
-
-struct stat {
-       dev_t     st_dev;      // ID of device containing file
-       ino_t     st_ino;      // Inode number
-       mode_t    st_mode;     // File type and mode
-       nlink_t   st_nlink;    // Number of hard links
-       uid_t     st_uid;      // User ID of owner
-       gid_t     st_gid;      // Group ID of owner
-       dev_t     st_rde;      // Device ID (if special file)
-       off_t     st_size;     // Total size, in bytes
-       blksize_t st_blksize;  // Block size for filesystem I/O
-       blkcnt_t  st_blocks;   // Number of 512B blocks allocated
-       struct timespec st_atim;  // Time of last access
-       struct timespec st_mtim;  // Time of last modification 
-       struct timespec st_ctim;  // Time of last status change
-};*/
-
 void scriere_in_snapshot(int snapshot, const void *buffer, size_t nr)
 {
   if(write(snapshot,buffer,nr)==-1)
@@ -51,42 +27,23 @@ void scriere_in_snapshot(int snapshot, const void *buffer, size_t nr)
     }
 }
 
+
 char *tip_fisier(struct stat statbuf, char *case_stat)
 {
-  if(S_ISBLK(statbuf.st_mode))
+  switch(statbuf.st_mode & S_IFMT)
     {
-      strcpy(case_stat,"block device");
-    }
-  else if(S_ISCHR(statbuf.st_mode))
-    {
-      strcpy(case_stat,"character device");
-    }
-  else if(S_ISDIR(statbuf.st_mode))
-    {
-      strcpy(case_stat,"directory");
-    }
-  else if(S_ISFIFO(statbuf.st_mode))
-    {
-      strcpy(case_stat,"FIFO/pipe");
-    }
-  else if(S_ISLNK(statbuf.st_mode))
-    {
-      strcpy(case_stat,"symlink");
-    }
-  else if(S_ISREG(statbuf.st_mode))
-    {
-      strcpy(case_stat,"regular file");
-    }
-  else if(S_ISSOCK(statbuf.st_mode))
-    {
-      strcpy(case_stat,"socket");
-    }
-  else
-    {
-      strcpy(case_stat,"unknown?");
+    case S_IFBLK:     strcpy(case_stat,"block device");         break;
+    case S_IFCHR:     strcpy(case_stat,"character device");     break;
+    case S_IFDIR:     strcpy(case_stat,"directory");            break;
+    case S_IFIFO:     strcpy(case_stat,"FIFO/pipe");            break;
+    case S_IFLNK:     strcpy(case_stat,"symlink");              break;
+    case S_IFREG:     strcpy(case_stat,"regular file");         break;
+    case S_IFSOCK:    strcpy(case_stat,"socket");               break;
+    default:          strcpy(case_stat,"unknown?");             break;
     }
   return case_stat;
 }
+
 
 void parcurgere_director(const char *director, int snapshot)
 {
