@@ -1,0 +1,33 @@
+***** Numele directorului curent: Fisier_mare_4 *****
+
+Numele fisierului:          altcevaaaa
+Tipul fisierului:           regular file
+I-node number:              6181066
+Last status changed:        Thu Apr  4 15:28:06 2024
+Last file access:           Fri Apr  5 20:15:35 2024
+Last file modification:     Thu Apr  4 15:28:06 2024
+
+
+Numele fisierului:          Fisier7
+Tipul fisierului:           directory
+I-node number:              6181067
+Last status changed:        Thu Apr  4 15:19:42 2024
+Last file access:           Mon Apr 15 19:45:23 2024
+Last file modification:     Tue Apr  2 23:21:44 2024
+
+
+Numele fisierului:          Snapshot[4]_.txt
+Tipul fisierului:           regular file
+I-node number:              6181170
+Last status changed:        Mon Apr 15 22:53:27 2024
+Last file access:           Mon Apr 15 22:53:01 2024
+Last file modification:     Mon Apr 15 22:53:27 2024
+
+
+Numele fisierului:          Fisier8
+Tipul fisierului:           directory
+I-node number:              6181065
+Last status changed:        Thu Apr  4 15:29:01 2024
+Last file access:           Mon Apr 15 19:45:23 2024
+Last file modification:     Thu Apr  4 15:29:01 2024
+

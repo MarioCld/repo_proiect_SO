@@ -98,44 +98,84 @@ void parcurgere_director(const char *director, int snapshot)
     }
   free(case_stat);
 }
- 
 
-int main(int argc, char *argv[])
+
+void creare_snapshot(const char *director, int i)
 {
-  if(argc<2 || argc>11)
-    {
-      perror("\nNumarul de argumente trebuie sa fie intre 2 si 10!\n\n");
-      exit(1);
-    }
   int snapshot;
-  bool ok=false;
-  snapshot=open("Snapshot.txt", O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
+  char fisier_snapshot[MAX];
+  snprintf(fisier_snapshot,sizeof(fisier_snapshot),"%s/Snapshot[%d]_.txt",director,i);
+  snapshot=open(fisier_snapshot, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
   if(snapshot==-1)
     {
       perror("\nNu s-a putut deschide snapshot-ul!\n\n");
       exit(5);
     }
-  for(int i=1;i<argc;i++)
+   parcurgere_director(director,snapshot);
+   if(close(snapshot)==-1)
+     {
+       perror("\nNu s-a putut inchide snapshot-ul!\n\n");
+       exit(6);
+     }
+   printf("Snapshot-ul pentru %s a fost creat cu succes!\n",director);
+}
+ 
+
+int main(int argc, char *argv[])
+{
+  bool ok=false;
+  if(strcmp(argv[1],"-o")==0)
     {
-      char *director=argv[i];
-      parcurgere_director(director,snapshot);
-      if(i==argc-1)
+      if(argc<4 || argc>13)
 	{
-	  ok=true;
+	  perror("\nNumarul de argumente trebuie sa fie intre 2 si 10!\n\n");
+	  exit(1);
 	}
-    }
-  if(close(snapshot)==-1)
-    {
-      perror("\nNu s-a putut inchide snapshot-ul!\n\n");
-      exit(6);
+      ok=true;
     }
   if(ok)
     {
-      printf("\nSnapshot-ul a fost modificat cu succes!\n\n");
+      int snapshot;
+      bool ok=false;
+      char *director_snapshot=argv[2];
+      char fisier_snapshot[strlen(director_snapshot)+strlen("/Director_snapshot_.txt")+2];
+      snprintf(fisier_snapshot,sizeof(fisier_snapshot),"%s/Director_snapshot_.txt",director_snapshot);
+      snapshot=open(fisier_snapshot, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
+      if(snapshot==-1)
+	{
+	  perror("\nNu s-a putut deschide snapshot-ul!\n\n");
+	  exit(5);
+	}
+      for(int i=3;i<argc;i++)
+	{
+	  char *director=argv[i];
+	  parcurgere_director(director,snapshot);
+	  if(i==argc-1)
+	    {
+	      ok=true;
+	    }
+	}
+      if(close(snapshot)==-1)
+	{
+	  perror("\nNu s-a putut inchide snapshot-ul!\n\n");
+	  exit(6);
+	}
+      if(ok)
+	{
+	  printf("\nDirectorul cu snapshot-uri a fost modificat cu succes!\n\n");
+	}
+      else if(!ok)
+	{
+	  printf("\nEroare la modificarea directorului cu snapshot-uri!\n\n");
+	}
     }
-  else if(!ok)
+  else
     {
-      printf("\nEroare la modificarea snapshot-ului!\n\n");
+      for(int i=1;i<argc;i++)
+	{
+	  char *director=argv[i];
+	  creare_snapshot(director,i);
+	}
     }
   return 0;
 }
