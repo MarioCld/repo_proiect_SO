@@ -16,6 +16,7 @@
 #define st_mtime st_mtim.tv_sec
 #define st_ctime st_ctim.tv_sec
 #define MAX_CASE 25
+#define MAX 256
 
 
 void scriere_in_snapshot(int snapshot, const void *buffer, size_t nr)
@@ -128,7 +129,7 @@ int main(int argc, char *argv[])
     {
       if(argc<4 || argc>13)
 	{
-	  perror("\nNumarul de argumente trebuie sa fie intre 2 si 10!\n\n");
+	  perror("\nNumarul de argumente trebuie sa fie intre 4 si 13!\n\n");
 	  exit(1);
 	}
       ok=true;
@@ -171,6 +172,11 @@ int main(int argc, char *argv[])
     }
   else
     {
+      if(argc<2 || argc>11)
+	{
+	  perror("\nNumarul de argumente trebuie sa fie intre 2 si 11!\n\n");
+	  exit(1);
+	}
       for(int i=1;i<argc;i++)
 	{
 	  char *director=argv[i];
