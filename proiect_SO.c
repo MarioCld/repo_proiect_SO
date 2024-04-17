@@ -16,7 +16,6 @@
 #define st_mtime st_mtim.tv_sec
 #define st_ctime st_ctim.tv_sec
 #define MAX_CASE 25
-#define MAX 256
 
 
 void scriere_in_snapshot(int snapshot, const void *buffer, size_t nr)
@@ -51,7 +50,7 @@ void parcurgere_director(const char *director, int snapshot)
   DIR *d;
   struct dirent *dir;
   struct stat statbuf;
-  char *case_stat=malloc(MAX_CASE*sizeof(char*));
+  char *case_stat=(char*)malloc(MAX_CASE*sizeof(char*));
   d=opendir(director);
   if(!d)
     {
@@ -75,7 +74,7 @@ void parcurgere_director(const char *director, int snapshot)
 	  exit(4);
 	}
       case_stat=tip_fisier(statbuf,case_stat);
-      char *i_node=malloc(MAX_CASE*sizeof(char*));
+      char *i_node=(char*)malloc(MAX_CASE*sizeof(char*));
       sprintf(i_node,"%ld\n",statbuf.st_ino);
       write(snapshot,"\nNumele fisierului:          ",strlen("Numele fisierului:          \n"));
       scriere_in_snapshot(snapshot,dir->d_name,strlen(dir->d_name));
@@ -104,7 +103,7 @@ void parcurgere_director(const char *director, int snapshot)
 void creare_snapshot(const char *director, int i)
 {
   int snapshot;
-  char fisier_snapshot[MAX];
+  char fisier_snapshot[strlen(director)+strlen("/Snapshot[]_.txt")+2];
   snprintf(fisier_snapshot,sizeof(fisier_snapshot),"%s/Snapshot[%d]_.txt",director,i);
   snapshot=open(fisier_snapshot, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
   if(snapshot==-1)
@@ -118,13 +117,89 @@ void creare_snapshot(const char *director, int i)
        perror("\nNu s-a putut inchide snapshot-ul!\n\n");
        exit(6);
      }
-   printf("Snapshot-ul pentru %s a fost creat cu succes!\n",director);
+   printf("\nSnapshot-ul pentru %s a fost creat cu succes!\n",director);
 }
- 
+
+
+void creare_director_snapshot(const char *director, const char *director_snapshot, int i)
+{
+  int snapshot;
+  char fisier_snapshot[strlen(director_snapshot)+strlen("/Director_snapshot[]_.txt")+2];
+  snprintf(fisier_snapshot,sizeof(fisier_snapshot),"%s/Director_snapshot[%d]_.txt",director_snapshot,i-2);
+  snapshot=open(fisier_snapshot, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
+  if(snapshot==-1)
+    {
+      perror("\nNu s-a putut deschide snapshot-ul!\n\n");
+      exit(5);
+    }
+  parcurgere_director(director,snapshot);
+  if(close(snapshot)==-1)
+    {
+      perror("\nNu s-a putut inchide snapshot-ul!\n\n");
+      exit(6);
+    }
+  printf("\nSnapshot-ul pentru %s a fost creat cu succes!\n",director);
+}
+
+
+void creare_proces(pid_t pid, int status, int argc, char *argv[], int i, int vector_pid[])
+{
+  if(i!=argc-1)
+    {
+      if((pid=fork())<0)
+	{
+	  perror("\nProcesul fiu nu a putut fi creat!\n\n");
+	  exit(8);
+	}
+      if(pid==0)
+	{
+	  i++;
+	  vector_pid[i-3]=getpid();
+	  creare_proces(pid,status,argc,argv,i,vector_pid);
+	  printf("\nProcesul copil %d s-a terminat cu PID %d si exit code 0.\n\n",i-2,vector_pid[i-3]);
+	  exit(0);
+	}
+    }
+  char *director_snapshot=argv[2];
+  char *director=argv[i];
+  creare_director_snapshot(director,director_snapshot,i);
+  if(i!=argc-1)
+    {
+      wait(&status);
+      if(!WIFEXITED(status))
+	{
+	  printf("\nProcesul copil cu id-ul %d din iteratia i=%d s-a incheiat anormal!\n\n",vector_pid[i-3],i-2);
+	}
+    }
+}
+
+
+void lansare_procese(int argc, char *argv[], int i, int vector_pid[])
+{
+  pid_t pid;
+  int status;
+  if((pid=fork())<0)
+    {
+      perror("\nProcesul fiu nu a putut fi creat!\n\n");
+      exit(8);
+    }
+  if(pid==0)
+    {
+      vector_pid[i-3]=getpid();
+      creare_proces(pid,status,argc,argv,i,vector_pid);
+      printf("\nProcesul copil %d s-a terminat cu PID %d si exit code 0.\n\n",i-2,vector_pid[i-3]);
+      exit(0);
+    }
+  wait(&status);
+  if(!WIFEXITED(status))
+    {
+      printf("\nProcesul copil cu id-ul %d din iteratia i=%d s-a incheiat anormal!\n\n",vector_pid[i-3],i-2);
+    }
+}
+
 
 int main(int argc, char *argv[])
 {
-  bool ok=false;
   if(strcmp(argv[1],"-o")==0)
     {
       if(argc<4 || argc>13)
@@ -132,43 +207,10 @@ int main(int argc, char *argv[])
 	  perror("\nNumarul de argumente trebuie sa fie intre 4 si 13!\n\n");
 	  exit(1);
 	}
-      ok=true;
-    }
-  if(ok)
-    {
-      int snapshot;
-      bool ok=false;
-      char *director_snapshot=argv[2];
-      char fisier_snapshot[strlen(director_snapshot)+strlen("/Director_snapshot_.txt")+2];
-      snprintf(fisier_snapshot,sizeof(fisier_snapshot),"%s/Director_snapshot_.txt",director_snapshot);
-      snapshot=open(fisier_snapshot, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
-      if(snapshot==-1)
-	{
-	  perror("\nNu s-a putut deschide snapshot-ul!\n\n");
-	  exit(5);
-	}
-      for(int i=3;i<argc;i++)
-	{
-	  char *director=argv[i];
-	  parcurgere_director(director,snapshot);
-	  if(i==argc-1)
-	    {
-	      ok=true;
-	    }
-	}
-      if(close(snapshot)==-1)
-	{
-	  perror("\nNu s-a putut inchide snapshot-ul!\n\n");
-	  exit(6);
-	}
-      if(ok)
-	{
-	  printf("\nDirectorul cu snapshot-uri a fost modificat cu succes!\n\n");
-	}
-      else if(!ok)
-	{
-	  printf("\nEroare la modificarea directorului cu snapshot-uri!\n\n");
-	}
+      int i=3;
+      int *vector_pid=(int*)malloc((argc-i)*sizeof(int*));
+      lansare_procese(argc,argv,i,vector_pid);
+      free(vector_pid);
     }
   else
     {

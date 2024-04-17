@@ -12,7 +12,7 @@ Numele fisierului:          Snapshot[3]_.txt
 Tipul fisierului:           regular file
 I-node number:              6181169
 Last status changed:        Wed Apr 17 13:08:32 2024
-Last file access:           Wed Apr 17 13:06:36 2024
+Last file access:           Wed Apr 17 13:08:38 2024
 Last file modification:     Wed Apr 17 13:08:32 2024
 
 
