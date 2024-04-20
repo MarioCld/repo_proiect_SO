@@ -45,7 +45,7 @@ char *tip_fisier(struct stat statbuf, char *case_stat)
 }
 
 
-void parcurgere_director(const char *director, int snapshot)
+void parcurgere_director(const char *director, int snapshot, int check_dir)
 {
   DIR *d;
   struct dirent *dir;
@@ -57,9 +57,12 @@ void parcurgere_director(const char *director, int snapshot)
       perror("\nNu s-a putut deschide directorul!\n\n");
       exit(2);
     }
-  write(snapshot,"***** Numele directorului curent: ",strlen("***** Numele directorului curent: "));
-  scriere_in_snapshot(snapshot,director,strlen(director));
-  write(snapshot," *****\n",strlen(" *****\n"));
+  if(check_dir==0)
+    {
+      write(snapshot,"***** Numele directorului curent: ",strlen("***** Numele directorului curent: "));
+      scriere_in_snapshot(snapshot,director,strlen(director));
+      write(snapshot," *****\n",strlen(" *****\n"));
+    }
   while((dir=readdir(d))!=NULL)
     {
       char cale_fisier[strlen(director)+strlen(dir->d_name)+2];
@@ -74,6 +77,14 @@ void parcurgere_director(const char *director, int snapshot)
 	  exit(4);
 	}
       case_stat=tip_fisier(statbuf,case_stat);
+      if(strcmp(case_stat,"directory")==0)
+	{
+	  check_dir=1;
+	  char cale_director[strlen(director)+strlen(dir->d_name)+2];
+	  snprintf(cale_director,sizeof(cale_director),"%s/%s",director,dir->d_name);
+	  parcurgere_director(cale_director,snapshot,check_dir);
+	}
+      check_dir=0;
       char *i_node=(char*)malloc(MAX_CASE*sizeof(char*));
       sprintf(i_node,"%ld\n",statbuf.st_ino);
       write(snapshot,"\nNumele fisierului:          ",strlen("Numele fisierului:          \n"));
@@ -103,6 +114,7 @@ void parcurgere_director(const char *director, int snapshot)
 void creare_snapshot(const char *director, int i)
 {
   int snapshot;
+  int check_dir=0;
   char fisier_snapshot[strlen(director)+strlen("/Snapshot[]_.txt")+2];
   snprintf(fisier_snapshot,sizeof(fisier_snapshot),"%s/Snapshot[%d]_.txt",director,i);
   snapshot=open(fisier_snapshot, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
@@ -111,7 +123,7 @@ void creare_snapshot(const char *director, int i)
       perror("\nNu s-a putut deschide snapshot-ul!\n\n");
       exit(5);
     }
-   parcurgere_director(director,snapshot);
+  parcurgere_director(director,snapshot,check_dir);
    if(close(snapshot)==-1)
      {
        perror("\nNu s-a putut inchide snapshot-ul!\n\n");
@@ -124,6 +136,7 @@ void creare_snapshot(const char *director, int i)
 void creare_director_snapshot(const char *director, const char *director_snapshot, int i)
 {
   int snapshot;
+  int check_dir=0;
   char fisier_snapshot[strlen(director_snapshot)+strlen("/Director_snapshot[]_.txt")+2];
   snprintf(fisier_snapshot,sizeof(fisier_snapshot),"%s/Director_snapshot[%d]_.txt",director_snapshot,i-2);
   snapshot=open(fisier_snapshot, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
@@ -132,7 +145,7 @@ void creare_director_snapshot(const char *director, const char *director_snapsho
       perror("\nNu s-a putut deschide snapshot-ul!\n\n");
       exit(5);
     }
-  parcurgere_director(director,snapshot);
+  parcurgere_director(director,snapshot,check_dir);
   if(close(snapshot)==-1)
     {
       perror("\nNu s-a putut inchide snapshot-ul!\n\n");
@@ -224,6 +237,7 @@ int main(int argc, char *argv[])
 	  char *director=argv[i];
 	  creare_snapshot(director,i);
 	}
+      printf("\n");
     }
   return 0;
 }
