@@ -15,7 +15,6 @@
 #define st_atime st_atim.tv_sec
 #define st_mtime st_mtim.tv_sec
 #define st_ctime st_ctim.tv_sec
-#define MAX_CASE 25
 
 
 void scriere_in_snapshot(int snapshot, const void *buffer, size_t nr)
@@ -50,7 +49,7 @@ void parcurgere_director(const char *director, int snapshot, int check_dir)
   DIR *d;
   struct dirent *dir;
   struct stat statbuf;
-  char *case_stat=(char*)malloc(MAX_CASE*sizeof(char*));
+  char case_stat[strlen("character device")+1];
   d=opendir(director);
   if(!d)
     {
@@ -76,7 +75,7 @@ void parcurgere_director(const char *director, int snapshot, int check_dir)
 	  perror("\nEroare stat\n\n");
 	  exit(4);
 	}
-      case_stat=tip_fisier(statbuf,case_stat);
+      strcpy(case_stat,tip_fisier(statbuf,case_stat));
       if(strcmp(case_stat,"directory")==0)
 	{
 	  check_dir=1;
@@ -85,7 +84,7 @@ void parcurgere_director(const char *director, int snapshot, int check_dir)
 	  parcurgere_director(cale_director,snapshot,check_dir);
 	}
       check_dir=0;
-      char *i_node=(char*)malloc(MAX_CASE*sizeof(char*));
+      char i_node[strlen("4300000000")];
       sprintf(i_node,"%ld\n",statbuf.st_ino);
       write(snapshot,"\nNumele fisierului:          ",strlen("Numele fisierului:          \n"));
       scriere_in_snapshot(snapshot,dir->d_name,strlen(dir->d_name));
@@ -100,14 +99,12 @@ void parcurgere_director(const char *director, int snapshot, int check_dir)
       write(snapshot,"Last file modification:     ",strlen("Last file modification:     "));
       scriere_in_snapshot(snapshot,ctime(&statbuf.st_mtime),strlen(ctime(&statbuf.st_mtime)));
       write(snapshot,"\n",strlen("\n"));
-      free(i_node);
     }
   if(closedir(d)==-1)
     {
       perror("\nNu s-a putut inchide directorul!\n\n");
       exit(3);
     }
-  free(case_stat);
 }
 
 
@@ -221,9 +218,8 @@ int main(int argc, char *argv[])
 	  exit(1);
 	}
       int i=3;
-      int *vector_pid=(int*)malloc((argc-i)*sizeof(int*));
+      int vector_pid[argc-i];
       lansare_procese(argc,argv,i,vector_pid);
-      free(vector_pid);
     }
   else
     {

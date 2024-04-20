@@ -3,16 +3,16 @@
 Numele fisierului:          Snapshot[2]_.txt
 Tipul fisierului:           regular file
 I-node number:              6181168
-Last status changed:        Sat Apr 20 22:39:51 2024
-Last file access:           Sat Apr 20 22:38:56 2024
-Last file modification:     Sat Apr 20 22:39:51 2024
+Last status changed:        Sat Apr 20 23:02:22 2024
+Last file access:           Sat Apr 20 22:58:50 2024
+Last file modification:     Sat Apr 20 23:02:22 2024
 
 
 Numele fisierului:          cevaaaa
 Tipul fisierului:           regular file
 I-node number:              6160388
 Last status changed:        Sat Apr 20 22:39:30 2024
-Last file access:           Sat Apr 20 22:39:30 2024
+Last file access:           Sat Apr 20 22:43:50 2024
 Last file modification:     Thu Apr  4 15:27:13 2024
 
 
@@ -20,7 +20,7 @@ Numele fisierului:          MiniFisier4
 Tipul fisierului:           directory
 I-node number:              6160386
 Last status changed:        Sat Apr 20 22:39:30 2024
-Last file access:           Sat Apr 20 22:29:52 2024
+Last file access:           Sat Apr 20 22:39:51 2024
 Last file modification:     Sat Apr 20 22:39:30 2024
 
 

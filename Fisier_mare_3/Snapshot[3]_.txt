@@ -4,7 +4,7 @@ Numele fisierului:          altceva
 Tipul fisierului:           regular file
 I-node number:              6160389
 Last status changed:        Sat Apr 20 22:39:38 2024
-Last file access:           Sat Apr 20 22:39:38 2024
+Last file access:           Sat Apr 20 22:43:50 2024
 Last file modification:     Thu Apr  4 15:27:26 2024
 
 
@@ -12,7 +12,7 @@ Numele fisierului:          MiniFisier5
 Tipul fisierului:           directory
 I-node number:              6160385
 Last status changed:        Sat Apr 20 22:39:38 2024
-Last file access:           Sat Apr 20 22:29:41 2024
+Last file access:           Sat Apr 20 22:39:51 2024
 Last file modification:     Sat Apr 20 22:39:38 2024
 
 
@@ -27,9 +27,9 @@ Last file modification:     Sat Apr 20 22:29:41 2024
 Numele fisierului:          Snapshot[3]_.txt
 Tipul fisierului:           regular file
 I-node number:              6181169
-Last status changed:        Sat Apr 20 22:39:51 2024
-Last file access:           Sat Apr 20 22:38:59 2024
-Last file modification:     Sat Apr 20 22:39:51 2024
+Last status changed:        Sat Apr 20 23:02:22 2024
+Last file access:           Sat Apr 20 22:58:48 2024
+Last file modification:     Sat Apr 20 23:02:22 2024
 
 
 Numele fisierului:          altceva
