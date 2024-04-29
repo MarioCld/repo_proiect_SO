@@ -46,9 +46,11 @@ char *tip_fisier(struct stat statbuf, char *case_stat)
 
 void drepturi_fisier(char *cale_fisier, struct dirent *dir, struct stat statbuf)
 {
-  if(!(statbuf.st_mode & S_IRWXU) && !(statbuf.st_mode & S_IRWXG) && !(statbuf.st_mode & S_IRWXO))
+  printf("%s",cale_fisier);
+  if(((statbuf.st_mode & S_IRUSR) && (statbuf.st_mode & S_IWUSR)) && !(statbuf.st_mode & S_IRWXG) && !(statbuf.st_mode & S_IRWXO))
     {
       pid_t npid;
+      int status;
       if((npid=fork())<0)
 	{
 	  perror("\nProcesul fiu nu a putut fi creat!\n\n");
@@ -56,11 +58,16 @@ void drepturi_fisier(char *cale_fisier, struct dirent *dir, struct stat statbuf)
 	}
       if(npid==0)
 	{
-	  char *executa[] = {"./verify_for_malicious.sh",cale_fisier,NULL};
-	  execvp(executa[0],executa);
+	  char *args[] = {"./verify_for_malicious.sh",cale_fisier,NULL};
+	  execvp(args[0],args);
 	  perror("\nEroare la executarea scriptului!\n\n");
 	  exit(9);
 	}
+       wait(&status);
+       if(!WIFEXITED(status))
+	 {
+	   printf("\nProcesul copil pentru verificarea scriptului s-a incheiat anormal!\n\n");
+	 }
     }
 }
 
