@@ -44,6 +44,27 @@ char *tip_fisier(struct stat statbuf, char *case_stat)
 }
 
 
+void drepturi_fisier(char *cale_fisier, struct dirent *dir, struct stat statbuf)
+{
+  if(!(statbuf.st_mode & S_IRWXU) && !(statbuf.st_mode & S_IRWXG) && !(statbuf.st_mode & S_IRWXO))
+    {
+      pid_t npid;
+      if((npid=fork())<0)
+	{
+	  perror("\nProcesul fiu nu a putut fi creat!\n\n");
+	  exit(8);
+	}
+      if(npid==0)
+	{
+	  char *executa[] = {"./verify_for_malicious.sh",cale_fisier,NULL};
+	  execvp(executa[0],executa);
+	  perror("\nEroare la executarea scriptului!\n\n");
+	  exit(9);
+	}
+    }
+}
+
+
 void parcurgere_director(const char *director, int snapshot, int check_dir)
 {
   DIR *d;
@@ -82,6 +103,10 @@ void parcurgere_director(const char *director, int snapshot, int check_dir)
 	  char cale_director[strlen(director)+strlen(dir->d_name)+2];
 	  snprintf(cale_director,sizeof(cale_director),"%s/%s",director,dir->d_name);
 	  parcurgere_director(cale_director,snapshot,check_dir);
+	}
+      if(strcmp(case_stat,"regular file")==0)
+	{
+	  drepturi_fisier(cale_fisier,dir,statbuf);
 	}
       check_dir=0;
       char i_node[strlen("4300000000")];
@@ -130,12 +155,21 @@ void creare_snapshot(const char *director, int i)
 }
 
 
-void creare_director_snapshot(const char *director, const char *director_snapshot, int i)
+void creare_director_snapshot(const char *director, const char *director_snapshot, int i, char *argv[])
 {
   int snapshot;
+  int j=0;
   int check_dir=0;
   char fisier_snapshot[strlen(director_snapshot)+strlen("/Director_snapshot[]_.txt")+2];
-  snprintf(fisier_snapshot,sizeof(fisier_snapshot),"%s/Director_snapshot[%d]_.txt",director_snapshot,i-2);
+  if(strcmp(argv[3],"-s")==0)
+    {
+      j=i-4;
+    }
+  else
+    {
+      j=i-2;
+    }
+  snprintf(fisier_snapshot,sizeof(fisier_snapshot),"%s/Director_snapshot[%d]_.txt",director_snapshot,j);
   snapshot=open(fisier_snapshot, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
   if(snapshot==-1)
     {
@@ -152,7 +186,7 @@ void creare_director_snapshot(const char *director, const char *director_snapsho
 }
 
 
-void creare_proces(pid_t pid, int status, int argc, char *argv[], int i, int vector_pid[])
+void creare_proces(pid_t pid, int status, int argc, char *argv[], int i, int j, int vector_pid[])
 {
   if(i!=argc-1)
     {
@@ -164,21 +198,22 @@ void creare_proces(pid_t pid, int status, int argc, char *argv[], int i, int vec
       if(pid==0)
 	{
 	  i++;
+	  j++;
 	  vector_pid[i-3]=getpid();
-	  creare_proces(pid,status,argc,argv,i,vector_pid);
-	  printf("\nProcesul copil %d s-a terminat cu PID %d si exit code 0.\n\n",i-2,vector_pid[i-3]);
+	  creare_proces(pid,status,argc,argv,i,j,vector_pid);
+	  printf("\nProcesul copil %d s-a terminat cu PID %d si exit code 0.\n\n",j,vector_pid[j-1]);
 	  exit(0);
 	}
     }
   char *director_snapshot=argv[2];
   char *director=argv[i];
-  creare_director_snapshot(director,director_snapshot,i);
+  creare_director_snapshot(director,director_snapshot,i,argv);
   if(i!=argc-1)
     {
       wait(&status);
       if(!WIFEXITED(status))
 	{
-	  printf("\nProcesul copil cu id-ul %d din iteratia i=%d s-a incheiat anormal!\n\n",vector_pid[i-3],i-2);
+	  printf("\nProcesul copil cu id-ul %d din iteratia i=%d s-a incheiat anormal!\n\n",vector_pid[j-1],j);
 	}
     }
 }
@@ -188,6 +223,15 @@ void lansare_procese(int argc, char *argv[], int i, int vector_pid[])
 {
   pid_t pid;
   int status;
+  int j=0;
+  if(strcmp(argv[3],"-s")==0)
+    {
+      j=i-4;
+    }
+  else
+    {
+      j=i-2;
+    }
   if((pid=fork())<0)
     {
       perror("\nProcesul fiu nu a putut fi creat!\n\n");
@@ -196,21 +240,32 @@ void lansare_procese(int argc, char *argv[], int i, int vector_pid[])
   if(pid==0)
     {
       vector_pid[i-3]=getpid();
-      creare_proces(pid,status,argc,argv,i,vector_pid);
-      printf("\nProcesul copil %d s-a terminat cu PID %d si exit code 0.\n\n",i-2,vector_pid[i-3]);
+      creare_proces(pid,status,argc,argv,i,j,vector_pid);
+      printf("\nProcesul copil %d s-a terminat cu PID %d si exit code 0.\n\n",j,vector_pid[j-1]);
       exit(0);
     }
   wait(&status);
   if(!WIFEXITED(status))
     {
-      printf("\nProcesul copil cu id-ul %d din iteratia i=%d s-a incheiat anormal!\n\n",vector_pid[i-3],i-2);
+      printf("\nProcesul copil cu id-ul %d din iteratia i=%d s-a incheiat anormal!\n\n",vector_pid[j-1],j);
     }
 }
 
 
 int main(int argc, char *argv[])
 {
-  if(strcmp(argv[1],"-o")==0)
+  if(strcmp(argv[3],"-s")==0)
+    {
+      if(argc<6 || argc>15)
+	{
+	  perror("\nNumarul de argumente trebuie sa fie intre 6 si 15!\n\n");
+	  exit(1);
+	}
+      int i=5;
+      int vector_pid[argc-i];
+      lansare_procese(argc,argv,i,vector_pid);
+    }
+  else if(strcmp(argv[1],"-o")==0)
     {
       if(argc<4 || argc>13)
 	{

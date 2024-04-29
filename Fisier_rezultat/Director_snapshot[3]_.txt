@@ -1,35 +1,35 @@
 ***** Numele directorului curent: Fisier_mare_3 *****
 
-Numele fisierului:          altceva
+Numele fisierului:          altcevaaa
 Tipul fisierului:           regular file
-I-node number:              6160389
-Last status changed:        Sat Apr 20 22:39:38 2024
-Last file access:           Sat Apr 20 22:43:50 2024
-Last file modification:     Thu Apr  4 15:27:26 2024
+I-node number:              6160390
+Last status changed:        Sat Apr 27 13:12:22 2024
+Last file access:           Sat Apr 27 13:12:24 2024
+Last file modification:     Fri Apr 26 13:43:04 2024
 
 
 Numele fisierului:          MiniFisier5
 Tipul fisierului:           directory
 I-node number:              6160385
-Last status changed:        Sat Apr 20 22:39:38 2024
-Last file access:           Sat Apr 20 22:39:51 2024
-Last file modification:     Sat Apr 20 22:39:38 2024
+Last status changed:        Fri Apr 26 13:43:05 2024
+Last file access:           Fri Apr 26 13:43:07 2024
+Last file modification:     Fri Apr 26 13:43:05 2024
 
 
 Numele fisierului:          Fisier5
 Tipul fisierului:           directory
 I-node number:              6181061
 Last status changed:        Sat Apr 20 22:29:41 2024
-Last file access:           Sat Apr 20 22:29:43 2024
+Last file access:           Sat Apr 27 13:31:55 2024
 Last file modification:     Sat Apr 20 22:29:41 2024
 
 
 Numele fisierului:          Snapshot[3]_.txt
 Tipul fisierului:           regular file
 I-node number:              6181169
-Last status changed:        Sat Apr 20 23:02:22 2024
-Last file access:           Sat Apr 20 22:58:48 2024
-Last file modification:     Sat Apr 20 23:02:22 2024
+Last status changed:        Mon Apr 22 17:20:08 2024
+Last file access:           Mon Apr 22 17:20:49 2024
+Last file modification:     Mon Apr 22 17:20:08 2024
 
 
 Numele fisierului:          altceva
@@ -44,6 +44,6 @@ Numele fisierului:          Fisier6
 Tipul fisierului:           directory
 I-node number:              6181059
 Last status changed:        Thu Apr  4 15:29:09 2024
-Last file access:           Sat Apr 20 22:25:31 2024
+Last file access:           Sat Apr 27 13:31:55 2024
 Last file modification:     Thu Apr  4 15:29:09 2024
 
