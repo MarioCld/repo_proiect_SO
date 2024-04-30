@@ -46,7 +46,6 @@ char *tip_fisier(struct stat statbuf, char *case_stat)
 
 void drepturi_fisier(char *cale_fisier, struct dirent *dir, struct stat statbuf)
 {
-  printf("%s",cale_fisier);
   if(((statbuf.st_mode & S_IRUSR) && (statbuf.st_mode & S_IWUSR)) && !(statbuf.st_mode & S_IRWXG) && !(statbuf.st_mode & S_IRWXO))
     {
       pid_t npid;
@@ -58,8 +57,8 @@ void drepturi_fisier(char *cale_fisier, struct dirent *dir, struct stat statbuf)
 	}
       if(npid==0)
 	{
-	  char *args[] = {"./verify_for_malicious.sh",cale_fisier,NULL};
-	  execvp(args[0],args);
+	  char *comanda[] = {"./verify_for_malicious.sh",cale_fisier,dir->d_name,NULL};
+	  execvp(comanda[0],comanda);
 	  perror("\nEroare la executarea scriptului!\n\n");
 	  exit(9);
 	}
