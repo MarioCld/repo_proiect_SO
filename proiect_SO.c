@@ -44,9 +44,9 @@ char *tip_fisier(struct stat statbuf, char *case_stat)
 }
 
 
-void drepturi_fisier(char *cale_fisier, struct dirent *dir, struct stat statbuf)
+void drepturi_fisier(char *cale_fisier, struct dirent *dir, struct stat statbuf, int *nrp)
 {
-  if(((statbuf.st_mode & S_IRUSR) && (statbuf.st_mode & S_IWUSR)) && !(statbuf.st_mode & S_IRWXG) && !(statbuf.st_mode & S_IRWXO))
+  if(((statbuf.st_mode & S_IRUSR) && !(statbuf.st_mode & S_IWUSR) && !(statbuf.st_mode & S_IXUSR)) && !(statbuf.st_mode & S_IRWXG) && !(statbuf.st_mode & S_IRWXO))
     {
       pid_t npid;
       int status;
@@ -57,21 +57,59 @@ void drepturi_fisier(char *cale_fisier, struct dirent *dir, struct stat statbuf)
 	}
       if(npid==0)
 	{
-	  char *comanda[] = {"./verify_for_malicious.sh",cale_fisier,dir->d_name,NULL};
-	  execvp(comanda[0],comanda);
+	  char *comanda_verificare[] = {"./verify_for_malicious.sh",cale_fisier,dir->d_name,NULL};
+	  execvp(comanda_verificare[0],comanda_verificare);
 	  perror("\nEroare la executarea scriptului!\n\n");
 	  exit(9);
 	}
-       wait(&status);
+      waitpid(npid,&status,0);
        if(!WIFEXITED(status))
 	 {
 	   printf("\nProcesul copil pentru verificarea scriptului s-a incheiat anormal!\n\n");
+	 }
+       else
+	 {
+	   char rezultat[20];
+	   FILE *temp;
+	   temp=fopen("temp.txt","r");
+	   if(!temp)
+	     {
+	       perror("\nNu s-a putut deschide fisierul!\n\n");
+	       exit(5);
+	     }
+	   fscanf(temp,"%s",rezultat);
+	   if(!strcmp(rezultat,"SAFE")==0)
+	     {
+	       (*nrp)++;
+	        if((npid=fork())<0)
+		  {
+		    perror("\nProcesul fiu nu a putut fi creat!\n\n");
+		    exit(8);
+		  }
+		if(npid==0)
+		  {
+		    char *comanda_mutare[] = {"mv",cale_fisier,"Izolated_space_dir",NULL};
+		    execvp(comanda_mutare[0],comanda_mutare);
+		    perror("\nEroare la executarea scriptului!\n\n");
+		    exit(9);
+		  }
+		wait(&status);
+		if(!WIFEXITED(status))
+		  {
+		    printf("\nProcesul copil pentru verificarea scriptului s-a incheiat anormal!\n\n");
+		  }
+		else if(fclose(temp)!=0)
+		  {
+		    perror("\nNu s-a putut inchide fisierul!\n\n");
+		    exit(6);
+		  }
+	     }
 	 }
     }
 }
 
 
-void parcurgere_director(const char *director, int snapshot, int check_dir)
+void parcurgere_director(const char *director, int snapshot, int check_dir, int *nrp)
 {
   DIR *d;
   struct dirent *dir;
@@ -108,11 +146,11 @@ void parcurgere_director(const char *director, int snapshot, int check_dir)
 	  check_dir=1;
 	  char cale_director[strlen(director)+strlen(dir->d_name)+2];
 	  snprintf(cale_director,sizeof(cale_director),"%s/%s",director,dir->d_name);
-	  parcurgere_director(cale_director,snapshot,check_dir);
+	  parcurgere_director(cale_director,snapshot,check_dir,nrp);
 	}
       if(strcmp(case_stat,"regular file")==0)
 	{
-	  drepturi_fisier(cale_fisier,dir,statbuf);
+	  drepturi_fisier(cale_fisier,dir,statbuf,nrp);
 	}
       check_dir=0;
       char i_node[strlen("4300000000")];
@@ -143,6 +181,7 @@ void creare_snapshot(const char *director, int i)
 {
   int snapshot;
   int check_dir=0;
+  int nrp=0;
   char fisier_snapshot[strlen(director)+strlen("/Snapshot[]_.txt")+2];
   snprintf(fisier_snapshot,sizeof(fisier_snapshot),"%s/Snapshot[%d]_.txt",director,i);
   snapshot=open(fisier_snapshot, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
@@ -151,7 +190,7 @@ void creare_snapshot(const char *director, int i)
       perror("\nNu s-a putut deschide snapshot-ul!\n\n");
       exit(5);
     }
-  parcurgere_director(director,snapshot,check_dir);
+  parcurgere_director(director,snapshot,check_dir,&nrp);
    if(close(snapshot)==-1)
      {
        perror("\nNu s-a putut inchide snapshot-ul!\n\n");
@@ -161,7 +200,7 @@ void creare_snapshot(const char *director, int i)
 }
 
 
-void creare_director_snapshot(const char *director, const char *director_snapshot, int i, char *argv[])
+void creare_director_snapshot(const char *director, const char *director_snapshot, int i, char *argv[], int *nrp)
 {
   int snapshot;
   int j=0;
@@ -182,7 +221,7 @@ void creare_director_snapshot(const char *director, const char *director_snapsho
       perror("\nNu s-a putut deschide snapshot-ul!\n\n");
       exit(5);
     }
-  parcurgere_director(director,snapshot,check_dir);
+  parcurgere_director(director,snapshot,check_dir,nrp);
   if(close(snapshot)==-1)
     {
       perror("\nNu s-a putut inchide snapshot-ul!\n\n");
@@ -192,10 +231,19 @@ void creare_director_snapshot(const char *director, const char *director_snapsho
 }
 
 
-void creare_proces(pid_t pid, int status, int argc, char *argv[], int i, int j, int vector_pid[])
+void creare_proces(pid_t pid, int status, int argc, char *argv[], int i, int j, int vector_pid[], int *nrp)
 {
+  int pfdc[2];
+  FILE *f;
+  char buffer_pipe[256];
+  int citire_pipe;
   if(i!=argc-1)
     {
+      if(pipe(pfdc)<0)
+	{
+	  perror("\nNu s-a putut crea un pipe!\n\n");
+	  exit(10);
+	}
       if((pid=fork())<0)
 	{
 	  perror("\nProcesul fiu nu a putut fi creat!\n\n");
@@ -203,19 +251,40 @@ void creare_proces(pid_t pid, int status, int argc, char *argv[], int i, int j, 
 	}
       if(pid==0)
 	{
+	  close(pfdc[0]);
 	  i++;
 	  j++;
-	  vector_pid[i-3]=getpid();
-	  creare_proces(pid,status,argc,argv,i,j,vector_pid);
-	  printf("\nProcesul copil %d s-a terminat cu PID %d si exit code 0.\n\n",j,vector_pid[j-1]);
+	  vector_pid[j-1]=getpid();
+	  creare_proces(pid,status,argc,argv,i,j,vector_pid,nrp);
+	  printf("\nProcesul copil %d s-a terminat cu PID %d si cu %d fisiere cu potential periculos.\n\n",j,vector_pid[j-1],*nrp);
+	  dup2(pfdc[1],1);
+	  close(pfdc[1]);
 	  exit(0);
 	}
     }
   char *director_snapshot=argv[2];
   char *director=argv[i];
-  creare_director_snapshot(director,director_snapshot,i,argv);
+  creare_director_snapshot(director,director_snapshot,i,argv,nrp);
   if(i!=argc-1)
     {
+      close(pfdc[1]);
+      citire_pipe=read(pfdc[0],buffer_pipe,256);
+      if(citire_pipe==-1)
+	{
+	  perror("\nNu s-a putut citi din pipe!\n\n");
+	  exit(11);
+	}
+      f=fdopen(pfdc[0],"r");
+      if(!f)
+	{
+	  perror("\nNu s-a putut deschide fisierul pentru citirea din pipe!\n\n");
+	  exit(5);
+	}
+      while(feof(f)!=0)
+	{
+	  fscanf(f,"%d",&pfdc[0]);
+	}
+      close(pfdc[0]);
       wait(&status);
       if(!WIFEXITED(status))
 	{
@@ -229,6 +298,10 @@ void lansare_procese(int argc, char *argv[], int i, int vector_pid[])
 {
   pid_t pid;
   int status;
+  int pfd[2];
+  FILE *f;
+  char buffer_pipe[256];
+  int citire_pipe;
   int j=0;
   if(strcmp(argv[3],"-s")==0)
     {
@@ -238,6 +311,11 @@ void lansare_procese(int argc, char *argv[], int i, int vector_pid[])
     {
       j=i-2;
     }
+  if(pipe(pfd)<0)
+    {
+      perror("\nNu s-a putut crea un pipe!\n\n");
+      exit(10);
+    }
   if((pid=fork())<0)
     {
       perror("\nProcesul fiu nu a putut fi creat!\n\n");
@@ -245,11 +323,33 @@ void lansare_procese(int argc, char *argv[], int i, int vector_pid[])
     }
   if(pid==0)
     {
-      vector_pid[i-3]=getpid();
-      creare_proces(pid,status,argc,argv,i,j,vector_pid);
-      printf("\nProcesul copil %d s-a terminat cu PID %d si exit code 0.\n\n",j,vector_pid[j-1]);
+      close(pfd[0]);
+      int nrp=0;
+      vector_pid[j-1]=getpid();
+      creare_proces(pid,status,argc,argv,i,j,vector_pid,&nrp);
+      printf("\nProcesul copil %d s-a terminat cu PID %d si cu %d fisiere cu potential periculos.\n\n",j,vector_pid[j-1],nrp);
+      dup2(pfd[1],1);
+      close(pfd[1]);
       exit(0);
     }
+  close(pfd[1]);
+  /* citire_pipe=read(pfd[0],buffer_pipe,256);
+  if(citire_pipe==-1)
+    {
+      perror("\nNu s-a putut citi din pipe!\n\n");
+      exit(11);
+    }
+  f=fdopen(pfd[0],"r");
+  if(!f)
+    {
+      perror("\nNu s-a putut deschide fisierul pentru citirea din pipe!\n\n");
+      exit(5);
+    }
+  while(feof(f)!=0)
+    {
+      fscanf(f,"%d",&pfd[0]);
+      }*/
+  close(pfd[0]);
   wait(&status);
   if(!WIFEXITED(status))
     {

@@ -7,8 +7,9 @@ nr_linii=$(wc -l < "$cale_fisier")
 nr_cuvinte=$(wc -w < "$cale_fisier")
 nr_caractere=$(wc -c < "$cale_fisier")
 
+
 if [ ! -f "$cale_fisier" ];
-    then echo -e "\nFisierul nu a fost gasit: $nume_fisier\n"
+    then echo "Fisierul nu a fost gasit: $nume_fisier" > temp.txt
     exit 1
 fi
 
@@ -36,14 +37,13 @@ if [ $suspect -eq 1 ]
        then ok=1
    fi
    if [ $ok -eq 0 ];
-       then echo -e "\nSAFE\n"
+       then echo "SAFE" > temp.txt
    fi
    if [ $ok -eq 1 ];
-       then mv "$cale_fisier" "$director"
-       echo -e "\n$nume_fisier\n"
+       then echo "$nume_fisier" > temp.txt
    fi
 fi
 
 if [ $suspect -eq 0 ]
-    then echo -e "\nSAFE\n"
+    then echo "SAFE" > temp.txt
 fi
