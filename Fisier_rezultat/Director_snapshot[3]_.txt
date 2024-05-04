@@ -3,9 +3,9 @@
 Numele fisierului:          MiniFisier5
 Tipul fisierului:           directory
 I-node number:              6160385
-Last status changed:        Sat May  4 21:34:33 2024
-Last file access:           Sat May  4 21:37:01 2024
-Last file modification:     Sat May  4 21:34:33 2024
+Last status changed:        Sat May  4 23:44:23 2024
+Last file access:           Sat May  4 23:44:23 2024
+Last file modification:     Sat May  4 23:44:23 2024
 
 
 Numele fisierului:          Fisier5

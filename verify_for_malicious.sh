@@ -3,6 +3,7 @@
 cale_fisier=$1
 nume_fisier=$2
 director="Izolated_space_dir"
+
 nr_linii=$(wc -l < "$cale_fisier")
 nr_cuvinte=$(wc -w < "$cale_fisier")
 nr_caractere=$(wc -c < "$cale_fisier")

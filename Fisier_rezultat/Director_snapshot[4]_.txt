@@ -27,9 +27,9 @@ Last file modification:     Mon Apr 22 17:20:08 2024
 Numele fisierului:          MiniFisier8
 Tipul fisierului:           directory
 I-node number:              6160387
-Last status changed:        Sat May  4 21:34:33 2024
-Last file access:           Sat May  4 21:34:33 2024
-Last file modification:     Sat May  4 21:34:33 2024
+Last status changed:        Sat May  4 23:44:23 2024
+Last file access:           Sat May  4 23:44:23 2024
+Last file modification:     Sat May  4 23:44:23 2024
 
 
 Numele fisierului:          Fisier8
