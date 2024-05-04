@@ -72,7 +72,7 @@ void drepturi_fisier(char *cale_fisier, struct dirent *dir, struct stat statbuf,
       if(npid1==0)
 	{
 	  close(pfd[0]);
-	  if(dup2(pfd[1],temp)==-1)
+	  if(dup2(pfd[1],STDIN_FILENO)==-1)
 	    {
 	      perror("\nNu s-a putut redirectiona iesirea standard!\n\n");
 	      exit(12);
