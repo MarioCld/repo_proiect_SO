@@ -267,7 +267,7 @@ void creare_proces(pid_t pid, int status, int argc, char *argv[], int i, int j, 
 	  j++;
 	  vector_pid[j-1]=getpid();
 	  creare_proces(pid,status,argc,argv,i,j,vector_pid,nrp);
-	  printf("\nProcesul copil %d s-a terminat cu PID %d si cu %d fisiere cu potential periculos.\n\n",j,vector_pid[j-1],*nrp);;
+	  printf("\nProcesul copil %d s-a terminat cu PID %d si cu %d fisiere cu potential periculos.\n\n",j,vector_pid[j-1],*nrp);
 	  exit(0);
 	}
     }

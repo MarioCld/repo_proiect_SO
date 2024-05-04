@@ -28,7 +28,7 @@ Numele fisierului:          altceva
 Tipul fisierului:           regular file
 I-node number:              6181069
 Last status changed:        Thu Apr  4 15:27:26 2024
-Last file access:           Sat Apr 20 22:39:38 2024
+Last file access:           Sun May  5 00:01:30 2024
 Last file modification:     Thu Apr  4 15:27:26 2024
 
 

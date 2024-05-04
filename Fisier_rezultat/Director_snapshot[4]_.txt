@@ -4,7 +4,7 @@ Numele fisierului:          altcevaaaa
 Tipul fisierului:           regular file
 I-node number:              6181066
 Last status changed:        Thu Apr  4 15:28:06 2024
-Last file access:           Sat Apr 20 22:39:48 2024
+Last file access:           Sun May  5 00:01:34 2024
 Last file modification:     Thu Apr  4 15:28:06 2024
 
 

@@ -8,7 +8,6 @@ nr_linii=$(wc -l < "$cale_fisier")
 nr_cuvinte=$(wc -w < "$cale_fisier")
 nr_caractere=$(wc -c < "$cale_fisier")
 
-
 if [ ! -f "$cale_fisier" ];
     then echo "Fisierul nu a fost gasit: $nume_fisier" > temp.txt
     exit 1

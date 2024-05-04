@@ -34,8 +34,8 @@ Last file modification:     Thu Apr  4 15:29:17 2024
 
 Numele fisierului:          cevaaaa
 Tipul fisierului:           regular file
-I-node number:              6181072
-Last status changed:        Thu Apr  4 15:27:13 2024
-Last file access:           Sat Apr 20 22:39:30 2024
-Last file modification:     Thu Apr  4 15:27:13 2024
+I-node number:              6160418
+Last status changed:        Sun May  5 00:00:00 2024
+Last file access:           Sun May  5 00:00:00 2024
+Last file modification:     Sun May  5 00:00:00 2024
 
