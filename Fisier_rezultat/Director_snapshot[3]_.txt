@@ -19,17 +19,17 @@ Last file modification:     Sat Apr 20 22:29:41 2024
 Numele fisierului:          Snapshot[3]_.txt
 Tipul fisierului:           regular file
 I-node number:              6181169
-Last status changed:        Mon Apr 22 17:20:08 2024
+Last status changed:        Sun May  5 13:03:28 2024
 Last file access:           Fri May  3 16:25:28 2024
-Last file modification:     Mon Apr 22 17:20:08 2024
+Last file modification:     Sun May  5 13:03:28 2024
 
 
 Numele fisierului:          altceva
 Tipul fisierului:           regular file
-I-node number:              6181069
-Last status changed:        Thu Apr  4 15:27:26 2024
-Last file access:           Sun May  5 00:01:30 2024
-Last file modification:     Thu Apr  4 15:27:26 2024
+I-node number:              6160420
+Last status changed:        Sun May  5 00:02:07 2024
+Last file access:           Sun May  5 00:02:21 2024
+Last file modification:     Sun May  5 00:02:07 2024
 
 
 Numele fisierului:          Fisier6

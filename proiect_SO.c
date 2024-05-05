@@ -127,7 +127,7 @@ void drepturi_fisier(char *cale_fisier, struct dirent *dir, struct stat statbuf,
 }
 
 
-void parcurgere_director(const char *director, int snapshot, int check_dir, int *nrp)
+void parcurgere_director(const char *director, int snapshot, int check_dir, int *nr_fisiere_periculoase)
 {
   DIR *d;
   struct dirent *dir;
@@ -164,11 +164,11 @@ void parcurgere_director(const char *director, int snapshot, int check_dir, int 
 	  check_dir=1;
 	  char cale_director[strlen(director)+strlen(dir->d_name)+2];
 	  snprintf(cale_director,sizeof(cale_director),"%s/%s",director,dir->d_name);
-	  parcurgere_director(cale_director,snapshot,check_dir,nrp);
+	  parcurgere_director(cale_director,snapshot,check_dir,nr_fisiere_periculoase);
 	}
-      if(strcmp(case_stat,"regular file")==0)
+      if((strcmp(case_stat,"regular file")==0) && *nr_fisiere_periculoase!=-1)
 	{
-	  drepturi_fisier(cale_fisier,dir,statbuf,nrp);
+	  drepturi_fisier(cale_fisier,dir,statbuf,nr_fisiere_periculoase);
 	}
       check_dir=0;
       char i_node[strlen("4300000000")];
@@ -199,7 +199,7 @@ void creare_snapshot(const char *director, int i)
 {
   int snapshot;
   int check_dir=0;
-  int nrp=0;
+  int nr_fisiere_periculoase=-1;
   char fisier_snapshot[strlen(director)+strlen("/Snapshot[]_.txt")+2];
   snprintf(fisier_snapshot,sizeof(fisier_snapshot),"%s/Snapshot[%d]_.txt",director,i);
   snapshot=open(fisier_snapshot, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
@@ -208,7 +208,7 @@ void creare_snapshot(const char *director, int i)
       perror("\nNu s-a putut deschide snapshot-ul!\n\n");
       exit(5);
     }
-  parcurgere_director(director,snapshot,check_dir,&nrp);
+  parcurgere_director(director,snapshot,check_dir,&nr_fisiere_periculoase);
    if(close(snapshot)==-1)
      {
        perror("\nNu s-a putut inchide snapshot-ul!\n\n");
@@ -218,7 +218,7 @@ void creare_snapshot(const char *director, int i)
 }
 
 
-void creare_director_snapshot(const char *director, const char *director_snapshot, int i, char *argv[], int *nrp)
+void creare_director_snapshot(const char *director, const char *director_snapshot, int i, char *argv[], int *nr_fisiere_periculoase)
 {
   int snapshot;
   int j=0;
@@ -231,6 +231,7 @@ void creare_director_snapshot(const char *director, const char *director_snapsho
   else
     {
       j=i-2;
+      (*nr_fisiere_periculoase)=-1;
     }
   snprintf(fisier_snapshot,sizeof(fisier_snapshot),"%s/Director_snapshot[%d]_.txt",director_snapshot,j);
   snapshot=open(fisier_snapshot, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
@@ -239,7 +240,7 @@ void creare_director_snapshot(const char *director, const char *director_snapsho
       perror("\nNu s-a putut deschide snapshot-ul!\n\n");
       exit(5);
     }
-  parcurgere_director(director,snapshot,check_dir,nrp);
+  parcurgere_director(director,snapshot,check_dir,nr_fisiere_periculoase);
   if(close(snapshot)==-1)
     {
       perror("\nNu s-a putut inchide snapshot-ul!\n\n");
@@ -252,7 +253,7 @@ void creare_director_snapshot(const char *director, const char *director_snapsho
 }
 
 
-void creare_proces(pid_t pid, int status, int argc, char *argv[], int i, int j, int vector_pid[], int *nrp)
+void creare_proces(pid_t pid, int status, int argc, char *argv[], int i, int j, int vector_pid[], int *nr_fisiere_periculoase)
 {
   if(i!=argc-1)
     {
@@ -266,14 +267,21 @@ void creare_proces(pid_t pid, int status, int argc, char *argv[], int i, int j, 
 	  i++;
 	  j++;
 	  vector_pid[j-1]=getpid();
-	  creare_proces(pid,status,argc,argv,i,j,vector_pid,nrp);
-	  printf("\nProcesul copil %d s-a terminat cu PID %d si cu %d fisiere cu potential periculos.\n\n",j,vector_pid[j-1],*nrp);
+	  creare_proces(pid,status,argc,argv,i,j,vector_pid,nr_fisiere_periculoase);
+	  if(strcmp(argv[3],"-s")==0)
+	    {
+	      printf("\nProcesul copil %d s-a terminat cu PID %d si cu %d fisiere cu potential periculos.\n\n",j,vector_pid[j-1],*nr_fisiere_periculoase);
+	    }
+	  else
+	    {
+	      printf("\nProcesul copil %d s-a terminat cu PID %d si exit code 0.\n\n",j,vector_pid[j-1]);
+	    }
 	  exit(0);
 	}
     }
   char *director_snapshot=argv[2];
   char *director=argv[i];
-  creare_director_snapshot(director,director_snapshot,i,argv,nrp);
+  creare_director_snapshot(director,director_snapshot,i,argv,nr_fisiere_periculoase);
   if(i!=argc-1)
     {
       wait(&status);
@@ -305,10 +313,17 @@ void lansare_procese(int argc, char *argv[], int i, int vector_pid[])
     }
   if(pid==0)
     {
-      int nrp=0;
+      int nr_fisiere_periculoase=0;
       vector_pid[j-1]=getpid();
-      creare_proces(pid,status,argc,argv,i,j,vector_pid,&nrp);
-      printf("\nProcesul copil %d s-a terminat cu PID %d si cu %d fisiere cu potential periculos.\n\n",j,vector_pid[j-1],nrp);
+      creare_proces(pid,status,argc,argv,i,j,vector_pid,&nr_fisiere_periculoase);
+      if(strcmp(argv[3],"-s")==0)
+	{
+	  printf("\nProcesul copil %d s-a terminat cu PID %d si cu %d fisiere cu potential periculos.\n\n",j,vector_pid[j-1],nr_fisiere_periculoase);
+	}
+      else
+	{
+	  printf("\nProcesul copil %d s-a terminat cu PID %d si exit code 0.\n\n",j,vector_pid[j-1]);
+	}
       exit(0);
     }
   wait(&status);
