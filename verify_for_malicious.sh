@@ -9,7 +9,7 @@ nr_cuvinte=$(wc -w < "$cale_fisier")
 nr_caractere=$(wc -c < "$cale_fisier")
 
 if [ ! -f "$cale_fisier" ];
-    then echo "Fisierul nu a fost gasit: $nume_fisier" > temp.txt
+    then echo "Fisierul nu a fost gasit: $nume_fisier"
     exit 1
 fi
 
@@ -37,13 +37,13 @@ if [ $suspect -eq 1 ]
        then ok=1
    fi
    if [ $ok -eq 0 ];
-       then echo "SAFE" > temp.txt
+       then echo "SAFE"
    fi
    if [ $ok -eq 1 ];
-       then echo "$nume_fisier" > temp.txt
+       then echo "$nume_fisier"
    fi
 fi
 
 if [ $suspect -eq 0 ]
-    then echo "SAFE" > temp.txt
+    then echo "SAFE"
 fi

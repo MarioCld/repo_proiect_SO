@@ -52,13 +52,6 @@ void drepturi_fisier(char *cale_fisier, struct dirent *dir, struct stat statbuf,
       int status;
       int pfd[2];
       char buffer_pipe[256];
-      int temp;
-      temp=open("temp.txt", O_RDONLY);
-	   if(temp==-1)
-	     {
-	       perror("\nNu s-a putut deschide fisierul pentru citire si scriere!\n\n");
-	       exit(6);
-	     }
       if(pipe(pfd)<0)
 	{
 	  perror("\nNu s-a putut crea un pipe!\n\n");
@@ -72,7 +65,7 @@ void drepturi_fisier(char *cale_fisier, struct dirent *dir, struct stat statbuf,
       if(npid1==0)
 	{
 	  close(pfd[0]);
-	  if(dup2(pfd[1],STDIN_FILENO)==-1)
+	  if(dup2(pfd[1],1)==-1)
 	    {
 	      perror("\nNu s-a putut redirectiona iesirea standard!\n\n");
 	      exit(12);
@@ -85,13 +78,13 @@ void drepturi_fisier(char *cale_fisier, struct dirent *dir, struct stat statbuf,
 	    }
 	}
       close(pfd[1]);
-      if(dup2(pfd[0],STDIN_FILENO)==-1)
+      if(dup2(pfd[0],0)==-1)
 	{
 	  perror("\nNu s-a putut redirectiona intrarea standard!\n\n");
 	  exit(12);
 	}
        waitpid(npid1,&status,0);
-       while(read(temp,buffer_pipe,sizeof(buffer_pipe))>0)
+       while(read(0,buffer_pipe,sizeof(buffer_pipe))>0)
 	 {
 	   if(!strcmp(buffer_pipe,"SAFE")==0)
 	     {
@@ -118,11 +111,6 @@ void drepturi_fisier(char *cale_fisier, struct dirent *dir, struct stat statbuf,
 	 {
 	   printf("\nProcesul copil pentru verificarea scriptului s-a incheiat anormal!\n\n");
 	 }
-        else if(close(temp)==-1)
-	  {
-	    perror("\nNu s-a putut inchide fisierul pentru citire si scriere!\n\n");
-	    exit(6);
-	  }
     }
 }
 
