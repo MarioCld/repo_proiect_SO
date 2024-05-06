@@ -219,7 +219,7 @@ void creare_director_snapshot(const char *director, const char *director_snapsho
   else
     {
       j=i-2;
-      (*nr_fisiere_periculoase)=-1;
+      *nr_fisiere_periculoase=-1;
     }
   snprintf(fisier_snapshot,sizeof(fisier_snapshot),"%s/Director_snapshot[%d]_.txt",director_snapshot,j);
   snapshot=open(fisier_snapshot, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);

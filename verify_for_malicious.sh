@@ -17,7 +17,6 @@ cuvinte_cheie=("corrupted" "dangerous" "risk" "attack" "malware" "malicious")
 ok=0
 suspect=0
 
-nr_linii=$(wc -l < "$cale_fisier")
 if [ "$nr_linii" -lt 3 ];
     then if [ "$nr_cuvinte" -gt 10 ];
              then if [ "$nr_caractere" -gt 20 ];
