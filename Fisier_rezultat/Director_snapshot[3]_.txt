@@ -1,18 +1,26 @@
 ***** Numele directorului curent: Fisier_mare_3 *****
 
+Numele fisierului:          altcevaaa
+Tipul fisierului:           regular file
+I-node number:              6160390
+Last status changed:        Wed May  8 14:25:56 2024
+Last file access:           Wed May  8 14:20:42 2024
+Last file modification:     Tue Apr 30 14:21:49 2024
+
+
 Numele fisierului:          MiniFisier5
 Tipul fisierului:           directory
 I-node number:              6160385
-Last status changed:        Sat May  4 23:44:23 2024
-Last file access:           Mon May  6 18:40:27 2024
-Last file modification:     Sat May  4 23:44:23 2024
+Last status changed:        Wed May  8 14:25:56 2024
+Last file access:           Wed May  8 14:21:27 2024
+Last file modification:     Wed May  8 14:25:56 2024
 
 
 Numele fisierului:          Fisier5
 Tipul fisierului:           directory
 I-node number:              6181061
 Last status changed:        Sat Apr 20 22:29:41 2024
-Last file access:           Mon May  6 18:40:27 2024
+Last file access:           Wed May  8 13:53:11 2024
 Last file modification:     Sat Apr 20 22:29:41 2024
 
 
@@ -36,6 +44,6 @@ Numele fisierului:          Fisier6
 Tipul fisierului:           directory
 I-node number:              6181059
 Last status changed:        Thu Apr  4 15:29:09 2024
-Last file access:           Mon May  6 18:40:27 2024
+Last file access:           Wed May  8 13:53:11 2024
 Last file modification:     Thu Apr  4 15:29:09 2024
 

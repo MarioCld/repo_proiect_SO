@@ -12,7 +12,7 @@ Numele fisierului:          Fisier7
 Tipul fisierului:           directory
 I-node number:              6181067
 Last status changed:        Thu Apr  4 15:19:42 2024
-Last file access:           Mon May  6 18:40:27 2024
+Last file access:           Wed May  8 13:53:11 2024
 Last file modification:     Tue Apr  2 23:21:44 2024
 
 
@@ -24,18 +24,26 @@ Last file access:           Sun May  5 13:07:26 2024
 Last file modification:     Sun May  5 13:03:28 2024
 
 
+Numele fisierului:          altcevaaaaa
+Tipul fisierului:           regular file
+I-node number:              6160398
+Last status changed:        Wed May  8 14:26:01 2024
+Last file access:           Wed May  8 14:20:42 2024
+Last file modification:     Tue Apr 30 14:21:50 2024
+
+
 Numele fisierului:          MiniFisier8
 Tipul fisierului:           directory
 I-node number:              6160387
-Last status changed:        Sat May  4 23:44:23 2024
-Last file access:           Mon May  6 18:40:27 2024
-Last file modification:     Sat May  4 23:44:23 2024
+Last status changed:        Wed May  8 14:26:01 2024
+Last file access:           Wed May  8 14:20:42 2024
+Last file modification:     Wed May  8 14:26:01 2024
 
 
 Numele fisierului:          Fisier8
 Tipul fisierului:           directory
 I-node number:              6181065
 Last status changed:        Sat Apr 20 22:30:01 2024
-Last file access:           Mon May  6 18:40:27 2024
+Last file access:           Wed May  8 13:53:11 2024
 Last file modification:     Sat Apr 20 22:30:01 2024
 

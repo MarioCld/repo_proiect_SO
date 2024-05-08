@@ -1,5 +1,7 @@
 #!/bin/bash
 
+chmod 400 $1
+
 cale_fisier=$1
 nume_fisier=$2
 director="Izolated_space_dir"
@@ -46,3 +48,5 @@ fi
 if [ $suspect -eq 0 ]
     then echo "SAFE"
 fi
+
+chmod 000 $1

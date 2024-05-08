@@ -46,7 +46,7 @@ char *tip_fisier(struct stat statbuf, char *case_stat)
 
 void drepturi_fisier(char *cale_fisier, struct dirent *dir, struct stat statbuf, int *nrp)
 {
-  if(((statbuf.st_mode & S_IRUSR) && !(statbuf.st_mode & S_IWUSR) && !(statbuf.st_mode & S_IXUSR)) && !(statbuf.st_mode & S_IRWXG) && !(statbuf.st_mode & S_IRWXO))
+  if((!(statbuf.st_mode & S_IRUSR) && !(statbuf.st_mode & S_IWUSR) && !(statbuf.st_mode & S_IXUSR)) && !(statbuf.st_mode & S_IRWXG) && !(statbuf.st_mode & S_IRWXO))
     {
       pid_t npid1,npid2;
       int status;
