@@ -2,33 +2,25 @@
 
 Numele fisierului:          Snapshot[2]_.txt
 Tipul fisierului:           regular file
-I-node number:              6181168
-Last status changed:        Sun May  5 13:03:28 2024
-Last file access:           Sun May  5 13:07:26 2024
-Last file modification:     Sun May  5 13:03:28 2024
-
-
-Numele fisierului:          cevaaaaa
-Tipul fisierului:           regular file
-I-node number:              6160389
-Last status changed:        Wed May  8 14:25:51 2024
-Last file access:           Wed May  8 14:20:42 2024
-Last file modification:     Tue Apr 30 14:21:48 2024
+I-node number:              6160426
+Last status changed:        Fri May 17 21:19:36 2024
+Last file access:           Fri May 17 21:20:08 2024
+Last file modification:     Fri May 17 21:19:36 2024
 
 
 Numele fisierului:          MiniFisier4
 Tipul fisierului:           directory
 I-node number:              6160386
-Last status changed:        Wed May  8 14:25:51 2024
-Last file access:           Wed May  8 14:21:27 2024
-Last file modification:     Wed May  8 14:25:51 2024
+Last status changed:        Fri May 17 21:17:48 2024
+Last file access:           Fri May 17 21:17:56 2024
+Last file modification:     Fri May 17 21:17:48 2024
 
 
 Numele fisierului:          Fisier4
 Tipul fisierului:           directory
 I-node number:              6181073
 Last status changed:        Sat Apr 20 22:29:52 2024
-Last file access:           Wed May  8 13:53:11 2024
+Last file access:           Fri May 17 21:12:54 2024
 Last file modification:     Sat Apr 20 22:29:52 2024
 
 
@@ -36,7 +28,7 @@ Numele fisierului:          Fisier3
 Tipul fisierului:           directory
 I-node number:              6181071
 Last status changed:        Thu Apr  4 15:29:17 2024
-Last file access:           Wed May  8 13:53:11 2024
+Last file access:           Fri May 17 21:12:54 2024
 Last file modification:     Thu Apr  4 15:29:17 2024
 
 
@@ -44,6 +36,6 @@ Numele fisierului:          cevaaaa
 Tipul fisierului:           regular file
 I-node number:              6160421
 Last status changed:        Sun May  5 00:02:10 2024
-Last file access:           Sun May  5 00:02:21 2024
+Last file access:           Wed May  8 14:31:49 2024
 Last file modification:     Sun May  5 00:02:10 2024
 

@@ -4,47 +4,31 @@ Numele fisierului:          ceva
 Tipul fisierului:           regular file
 I-node number:              6062204
 Last status changed:        Sun May  5 00:02:09 2024
-Last file access:           Sun May  5 00:02:21 2024
+Last file access:           Mon May 13 17:27:51 2024
 Last file modification:     Sun May  5 00:02:09 2024
 
 
 Numele fisierului:          Snapshot[1]_.txt
 Tipul fisierului:           regular file
-I-node number:              6029434
-Last status changed:        Sun May  5 13:03:28 2024
-Last file access:           Fri May  3 16:25:28 2024
-Last file modification:     Sun May  5 13:03:28 2024
-
-
-Numele fisierului:          cevaaa
-Tipul fisierului:           regular file
-I-node number:              6029393
-Last status changed:        Sun May  5 13:03:21 2024
-Last file access:           Sun May  5 12:59:09 2024
-Last file modification:     Tue Apr 30 14:49:53 2024
-
-
-Numele fisierului:          iarcevaaa
-Tipul fisierului:           regular file
-I-node number:              6029462
-Last status changed:        Sun May  5 13:03:21 2024
-Last file access:           Sun May  5 12:59:09 2024
-Last file modification:     Sat May  4 01:14:15 2024
+I-node number:              6053865
+Last status changed:        Fri May 17 21:19:36 2024
+Last file access:           Fri May 17 21:18:54 2024
+Last file modification:     Fri May 17 21:19:36 2024
 
 
 Numele fisierului:          MiniFisier1
 Tipul fisierului:           directory
 I-node number:              6029471
-Last status changed:        Sun May  5 13:03:21 2024
-Last file access:           Sun May  5 12:59:26 2024
-Last file modification:     Sun May  5 13:03:21 2024
+Last status changed:        Fri May 17 21:17:48 2024
+Last file access:           Fri May 17 21:17:56 2024
+Last file modification:     Fri May 17 21:17:48 2024
 
 
 Numele fisierului:          Fisier1
 Tipul fisierului:           directory
 I-node number:              6061445
 Last status changed:        Sat Apr 20 21:59:39 2024
-Last file access:           Sat May  4 21:29:48 2024
+Last file access:           Fri May 17 21:12:01 2024
 Last file modification:     Sat Apr 20 21:59:39 2024
 
 
@@ -52,6 +36,6 @@ Numele fisierului:          Fisier2
 Tipul fisierului:           directory
 I-node number:              6061598
 Last status changed:        Tue Apr  2 23:21:44 2024
-Last file access:           Sat May  4 21:29:49 2024
+Last file access:           Fri May 17 21:12:08 2024
 Last file modification:     Tue Apr  2 23:21:44 2024
 

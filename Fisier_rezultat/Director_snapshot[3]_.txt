@@ -1,42 +1,34 @@
 ***** Numele directorului curent: Fisier_mare_3 *****
 
-Numele fisierului:          altcevaaa
-Tipul fisierului:           regular file
-I-node number:              6160390
-Last status changed:        Wed May  8 14:25:56 2024
-Last file access:           Wed May  8 14:20:42 2024
-Last file modification:     Tue Apr 30 14:21:49 2024
-
-
 Numele fisierului:          MiniFisier5
 Tipul fisierului:           directory
 I-node number:              6160385
-Last status changed:        Wed May  8 14:25:56 2024
-Last file access:           Wed May  8 14:21:27 2024
-Last file modification:     Wed May  8 14:25:56 2024
+Last status changed:        Fri May 17 21:17:48 2024
+Last file access:           Fri May 17 21:17:56 2024
+Last file modification:     Fri May 17 21:17:48 2024
 
 
 Numele fisierului:          Fisier5
 Tipul fisierului:           directory
 I-node number:              6181061
 Last status changed:        Sat Apr 20 22:29:41 2024
-Last file access:           Wed May  8 13:53:11 2024
+Last file access:           Fri May 17 21:12:54 2024
 Last file modification:     Sat Apr 20 22:29:41 2024
 
 
 Numele fisierului:          Snapshot[3]_.txt
 Tipul fisierului:           regular file
-I-node number:              6181169
-Last status changed:        Sun May  5 13:03:28 2024
-Last file access:           Sun May  5 13:07:26 2024
-Last file modification:     Sun May  5 13:03:28 2024
+I-node number:              6160427
+Last status changed:        Fri May 17 21:19:36 2024
+Last file access:           Fri May 17 21:20:10 2024
+Last file modification:     Fri May 17 21:19:36 2024
 
 
 Numele fisierului:          altceva
 Tipul fisierului:           regular file
 I-node number:              6160420
 Last status changed:        Sun May  5 00:02:07 2024
-Last file access:           Sun May  5 00:02:21 2024
+Last file access:           Wed May  8 14:31:49 2024
 Last file modification:     Sun May  5 00:02:07 2024
 
 
@@ -44,6 +36,6 @@ Numele fisierului:          Fisier6
 Tipul fisierului:           directory
 I-node number:              6181059
 Last status changed:        Thu Apr  4 15:29:09 2024
-Last file access:           Wed May  8 13:53:11 2024
+Last file access:           Fri May 17 21:12:54 2024
 Last file modification:     Thu Apr  4 15:29:09 2024
 
