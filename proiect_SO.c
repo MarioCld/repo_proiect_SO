@@ -9,7 +9,6 @@
 #include <sys/wait.h>
 #include <string.h>
 #include <fcntl.h>
-#include <stdbool.h>
 
 
 #define st_atime st_atim.tv_sec
