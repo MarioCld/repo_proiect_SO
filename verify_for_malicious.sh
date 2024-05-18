@@ -20,8 +20,8 @@ ok=0 #verifica daca fisierul este periculos sau nu
 suspect=0 #verifica daca fisierul este suspect sau nu
 
 if [ "$nr_linii" -lt 3 ]; #se compara numarul de linii
-    then if [ "$nr_cuvinte" -gt 10 ]; #se compara numarul de cuvinte
-             then if [ "$nr_caractere" -gt 20 ]; #se compara numarul de caractere
+    then if [ "$nr_cuvinte" -gt 1000 ]; #se compara numarul de cuvinte
+             then if [ "$nr_caractere" -gt 2000 ]; #se compara numarul de caractere
                       then suspect=1
                   fi
          fi
